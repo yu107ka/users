@@ -6,15 +6,6 @@
         $sth = $pdo->prepare("delete from users where id = :id");
         $sth->bindValue(':id', $id, PDO::PARAM_INT);
         $sth->execute();//ユーザーを消去
-     }elseif(isset($_POST['Update'])){
-        session_start(); 
-        $id = $_POST['id'];
-        $name = $_POST['name'];
-        $gender = $_POST['gender'];
-        $DOB = $_POST['DOB'];
-        $id = $_POST['weight'];
-        $height = $_POST['height'];
-  
      }
 ?>
 
@@ -46,7 +37,8 @@
                         <input type="hidden" name="delete" value="true">
                     </form>
                     <form method="get" action="update.php">
-                      <input type="hidden" name="id" value="<?= $row['id'] ?> ">                      <button  type="submit" name="Update">Update</button>
+		      <input type="hidden" name="id" value="<?= $row['id'] ?> "> 
+ 		      <button  type="submit" name="Update">Update</button>
                     </form>
                 </td>
             </tr>
