@@ -1,50 +1,21 @@
 <?php 
     $pdo = new PDO("mysql:dbname=mydb;host=localhost;charset=utf8","root","", [PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING]);
 
-if(isset($_POST['update']) ){ //â†“â†“å€¤ã®å–å¾—â†“â†“
-     $name = htmlentities($_POST['name'],ENT_QUOTES,"UTF-8");
-     $gender = $_POST['gender'];
-     $month = $_POST['month'];
-     $day = $_POST['day'];
-     $year = $_POST['year'];
-     $height = $_POST['height'];
-     $weight = $_POST['weight'];
-     $id = $_POST['id']; //â†‘â†‘å€¤ã®å–å¾—â†‘â†‘
-    
-     if($name==null){
-           echo 'name is emputy.<br>';
-           $error=1; //åå‰ãŒç©ºã§ãªã„ã‹
-        }
-     if($month==null||$day==null||$year==null){
-           echo 'DOB is emputy.<br>';
-           $error=1; //ç”Ÿå¹´æœˆæ—¥ãŒç©ºã§ãªã„ã‹
-        }elseif(!checkdate( $month, $day, $year ) ){
-            echo 'DOB is not appropriate.<br>';
-            $error=1; //ç”Ÿå¹´æœˆæ—¥ãŒé©åˆ‡ã‹
-        }
-     if($height==null){
-           echo 'height is emputy.<br>';
-           $error=1; //èº«é•·ãŒç©ºã§ãªã„ã‹
-        }
-     if($weight==null){
-           echo 'weight is emputy.<br>';
-           $error=1; //ä½“é‡ãŒç©ºã§ãªã„ã‹
-        } 
-     if($error==0){ //â†“â†“ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’æ›´æ–°â†“â†“
+
+if(isset($_POST['update']) ){
+     include('input.php'); //’l‚Ìæ“¾
+     $id = $_POST['id']; //•ÏX‚·‚éID‚Ìæ“¾
+     $error=0;
+     include('judge.php'); //“ü—Í‚³‚ê‚½’l‚ª³‚µ‚¢‚©‚Ç‚¤‚©
+     if($error==0){ //««ƒ†[ƒU[‚ğXV««
           $sth = $pdo->prepare("UPDATE users set name =:name,gender =:gender,month=:month,day=:day,year=:year,height=:height,weight=:weight where id = :id"); 
-          $sth->bindValue(':name', $name, PDO::PARAM_STR);
-          $sth->bindValue(':gender', $gender, PDO::PARAM_STR);
-          $sth->bindValue(':month', $month, PDO::PARAM_INT);
-          $sth->bindValue(':day', $day, PDO::PARAM_INT);
-          $sth->bindValue(':year', $year, PDO::PARAM_INT);
-          $sth->bindValue(':height', $height, PDO::PARAM_INT);
-          $sth->bindValue(':weight', $weight, PDO::PARAM_INT);
+          include('bindValue.php'); //•ÏX‚·‚é’l‚ğƒZƒbƒg
           $sth->bindValue(':id', $id, PDO::PARAM_INT);
           $sth->execute();
           header("location: userview.php");
-    }//â†‘â†‘ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’æ›´æ–°â†‘â†‘
+    }//ªªƒ†[ƒU[‚ğXVªª
 }
-$id = $_GET['id'];//IDã®å¼•ç¶™ã
+$id = $_GET['id'];//ID‚ÌˆøŒp‚¬
 
 ?>
 <!DOCTYPE HTML>
@@ -91,4 +62,3 @@ $id = $_GET['id'];//IDã®å¼•ç¶™ã
 }
 ?>
 </body>
-

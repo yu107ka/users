@@ -2,47 +2,16 @@
     $pdo = new PDO("mysql:dbname=mydb;host=localhost;charset=utf8","root","", [PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING]);   
 
 
-    if(isset($_POST['resister']) ){ //â†“â†“å€¤ã®å–å¾—â†“â†“
-        $name = htmlentities($_POST['name'],ENT_QUOTES,"UTF-8");
-        $gender = $_POST['gender'];
-        $month = $_POST['month'];
-        $day = $_POST['day'];
-        $year = $_POST['year'];
-        $height = $_POST['height'];
-        $weight = $_POST['weight'];
-        $error =0; //â†‘â†‘å€¤ã®å–å¾—â†‘â†‘
-        if($name==null){
-           echo 'name is emputy.<br>';
-           $error=1; //åå‰ãŒç©ºã§ãªã„ã‹
-        }
-        if($month==null||$day==null||$year==null){
-           echo 'DOB is emputy.<br>';
-           $error=1; //ç”Ÿå¹´æœˆæ—¥ãŒç©ºã§ãªã„ã‹
-        }elseif(!checkdate( $month, $day, $year ) ){
-            echo 'DOB is not appropriate.<br>';
-            $error=1; //ç”Ÿå¹´æœˆæ—¥ãŒé©åˆ‡ã‹
-          }
-        if($height==null){
-           echo 'height is emputy.<br>';
-           $error=1; //èº«é•·ãŒç©ºã§ãªã„ã‹
-        }
-        if($weight==null){
-           echo 'weight is emputy.<br>';
-           $error=1; //ä½“é‡ãŒç©ºã§ãªã„ã‹
-        }
-
-        if($error==0){ //â†“â†“ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’è¿½åŠ â†“â†“
+    if(isset($_POST['resister']) ){ 
+        include('input.php'); //’l‚Ìæ“¾
+        $error =0;
+        include('judge.php'); //“ü—Í‚³‚ê‚½’l‚ª³‚µ‚¢‚©‚Ç‚¤‚©
+        if($error==0){ //««ƒ†[ƒU[‚ğ’Ç‰Á««
           $sth = $pdo->prepare("INSERT INTO users (name,gender,month,day,year,height,weight) VALUES (:name,:gender,:month,:day,:year,:height,:weight)");
-          $sth->bindValue(':name', $name, PDO::PARAM_STR);
-          $sth->bindValue(':gender', $gender, PDO::PARAM_STR);
-          $sth->bindValue(':month', $month, PDO::PARAM_INT);
-          $sth->bindValue(':day', $day, PDO::PARAM_INT);
-          $sth->bindValue(':year', $year, PDO::PARAM_INT);
-          $sth->bindValue(':height', $height, PDO::PARAM_INT);
-          $sth->bindValue(':weight', $weight, PDO::PARAM_INT);
+          include('bindValue.php'); //•ÏX‚·‚é’l‚ğƒZƒbƒg
           $sth->execute();
           header("location: userview.php");
-          }//â†‘â†‘ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚’è¿½åŠ â†‘â†‘
+          }//ªªƒ†[ƒU[‚ğ’Ç‰Áªª
 
 }
 ?>
@@ -64,6 +33,5 @@
     <input type="submit" name="resister" value="resister" >
   </form>
 </body>
-
 
 
